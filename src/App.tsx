@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Lantern from ".//assets/[CITYPNG.COM]Black Ramadan Light Lantern Lamp Arabic Silhouette - 2000x2000.png";
 import Laight from ".//assets/—Pngtree—festive night yellow string lights_5367965.png";
+import sound from "./assets/نغمة_رمضان_mbc(256k).mp3"
 import './App.css'
 export default function RamadanLantern() {
   const [isOn, setIsOn] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
 
   return (
     <div style={{
@@ -13,8 +16,19 @@ export default function RamadanLantern() {
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
-    }}>
-      <div style={styles.lanternWrapper} onClick={() => setIsOn(!isOn)}>
+    }}><audio ref={audioRef} src={sound} />
+      <div style={styles.lanternWrapper} onClick={() => {
+        if (!isOn) {
+          setIsOn(true);
+          audioRef.current?.play();
+        } else {
+          setIsOn(false);
+          audioRef.current?.pause();
+          if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+          }
+        }
+      }}>
         <img src={Lantern}
           style={{
             width: "90vw", // يتغير حسب حجم الشاشة
@@ -32,7 +46,18 @@ export default function RamadanLantern() {
       </div>
 
       {/* الزر */}
-      <button style={{ ...styles.button, display: isOn ? "none" : "inline-block" }} onClick={() => setIsOn(!isOn)}>
+      <button style={{ ...styles.button, display: isOn ? "none" : "inline-block" }} onClick={() => {
+        if (!isOn) {
+          setIsOn(true);
+          audioRef.current?.play();
+        } else {
+          setIsOn(false);
+          audioRef.current?.pause();
+          if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+          }
+        }
+      }}>
         {isOn ? "اطفي الفانوس " : "✨click"}
       </button>
       <div style={{
